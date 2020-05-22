@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    if: "!contains(github.event.head_commit.message, '[skip-ci]')"
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+
+      - name: Git Checkout
+        id: git_checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        id: setup_python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+
+      - name: Setup Test Environment
+        id: setup_test_environment
+        run: |
+          python -m pip install pyyaml cwltest cwlref-runner
+          short_sha=${GITHUB_SHA::8}
+          echo "::set-env name=SHORT_SHA::$short_sha"
+
+      - name: Build Docker Image For testing
+        id: docker_build
+        uses: docker/build-push-action@v1
+        with:
+          repository: sagebionetworks/${{ github.event.repository.name }}
+          push: false # don't push before testing
+          tags: ${{ env.SHORT_SHA }}
+
+      - name: Edit CWL file tool version
+        id: edit_cwl
+        run: |
+          tools_dir=cwl
+          new_version=${{ env.SHORT_SHA }}
+          python utils/bump_cwl_version.py $tools_dir $new_version
+
+      - name: Test CWL
+        id: test_cwl
+        run: |
+          cwltest --test tests/test-descriptions.yaml --tool cwl-runner
+
+  build:
+    if: "!contains(github.event.head_commit.message, '[skip-ci]')"
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+
+      - name: Git Checkout
+        id: git_checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        id: setup_python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+
+      - name: Setup Build Environment
+        id: setup_build_environment
+        run: |
+          python -m pip install pyyaml
+
+      - name: Calculate Next Autotagging Version
+        id: calc_version
+        uses: mathieudutour/github-tag-action@v4.2
+        with:
+          dry_run: true # calculate the next version without actually tagging
+          release_branches: master
+
+      - name: Set Env Vars
+        id: set_version_env_vars
+        run: |
+          new_version=${{ steps.calc_version.outputs.new_version }}
+          new_tag=${{ steps.calc_version.outputs.new_tag }}
+          echo "::set-env name=NEW_VERSION::$new_version"
+          echo "::set-env name=NEW_GIT_TAG::$new_tag"
+
+      - name: Edit CWL file tool version
+        id: edit_cwl
+        run: |
+          tools_dir=cwl
+          new_version=${{ env.NEW_VERSION }}
+          python utils/bump_cwl_version.py $tools_dir $new_version
+
+      - name: Commit, Tag, Push
+        id: commit_tag_push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -a -m "Update docker image version in CWL tool to ${{ env.NEW_VERSION }}"
+          git tag ${{ env.NEW_GIT_TAG }}
+          git push && git push --tags
+
+      - name: Publish Docker Image
+        id: docker_publish
+        uses: docker/build-push-action@v1
+        with:
+          repository: sagebionetworks/${{ github.event.repository.name }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tags: ${{ env.NEW_VERSION }},latest
