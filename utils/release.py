@@ -5,7 +5,6 @@ import sys
 
 import semver
 import git
-import bump_cwl_version
 
 
 parser = argparse.ArgumentParser(
@@ -47,18 +46,6 @@ if major_bump:
   new_version = current_version.bump_major()
 else:
   new_version = current_version.bump_minor()
-
-# Update the version for all cwl tools
-tools_dir = 'cwl' # assuming relative to repo root
-bump_cwl_version.main(tools_dir=tools_dir, new_version=str(new_version))
-
-# Check whether repo is dirty before attempting commit
-if repo.is_dirty():
-  repo.git.add(tools_dir)
-  # '[skip-ci]' in commit to avoid the next patch increment --
-  # ci will run when the tag is pushed below
-  repo.git.commit( m=f'Update docker image version in CWL tool to {new_version} [skip-ci]' )
-  repo.remote().push()
 
 # Create and push the new tag
 new_tagname = f'v{str(new_version)}'
