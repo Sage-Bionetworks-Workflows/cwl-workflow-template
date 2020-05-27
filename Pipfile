@@ -3,13 +3,11 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
-[dev-packages]
-pytest = "*"
-
 [packages]
 semver = "*"
 gitpython = "*"
-pyyaml = "*"
+cwltest = "*"
+cwlref-runner = "*"
 
 [requires]
 python_version = "3.7"
