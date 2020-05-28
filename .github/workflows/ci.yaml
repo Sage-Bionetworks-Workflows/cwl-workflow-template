@@ -6,11 +6,37 @@ on:
       - master
 
 jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Git Checkout
+        id: git_checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        id: setup_python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+
+      - name: Setup Test Environment
+        id: setup_test_environment
+        run: |
+          python -m pip install pipenv
+          pipenv install --dev
+          short_sha=${GITHUB_SHA::8}
+          echo "::set-env name=SHORT_SHA::$short_sha"
+
+      - name: Test CWL
+        id: test_cwl
+        run: |
+          pipenv run cwltest --test tests/test-descriptions.yaml --tool cwl-runner
+
   tag:
     if: "!contains(github.event.head_commit.message, '[skip-ci]')"
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
 
       - name: Git Checkout
