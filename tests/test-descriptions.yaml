@@ -1,0 +1,7 @@
+- job: echo_hello_world.yaml
+  output:
+    echo_out: "hello, world!"
+  tool: ../main.cwl
+  label: workflow_example_test
+  id: 0
+  doc: Placeholder test
