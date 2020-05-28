@@ -1,38 +1,32 @@
-# dockstore-tool-template
-A template project for setting up a containerized CWL Tool.
+# dockstore-workflow-template
+A template project for setting up a [CWL](https://www.commonwl.org/) Workflow.
 
 # Description
 
-This template sets up an opinionated way to organize Docker, CWL, and
-tests for a CWL tool to be published on Dockstore.
-
-## Dockerfile
-
-A Dockerfile should exist in the top level directory of this repository.
+This template sets up an opinionated way to organize a repository containing
+workflow, subworkflows, and tests for publication on Dockstore.
 
 ## CWL
 
-A directory [cwl](cwl) should contain tool definitions in the CWL language.
+The example main workflow file, `main.cwl`, if placed at the root of the
+repository. The placeholder workflow includes another workflow as a step from
+the `subworkflows` directory. The subworkflow has an example of using a
+versioned tool from another repository.
 
 ## Tests
 
 [`cwltest`](https://github.com/common-workflow-language/cwltest) is used for
-testing tools. Add test descriptions to `tests/test-descriptions.yaml`. Each test
+testing. Add test descriptions to `tests/test-descriptions.yaml`. Each test
 added requires a file describing the job inputs that should be added to the
 [tests](tests) directory.
 
 ## Continuous Deployment and Versioning
 
-This template uses GitHub actions to perform automated versioning, version
-bumping, building of tagged Docker images, and pushing images to DockerHub.
+This template uses GitHub actions to run tests and perform automated versioning.
 
 ### CI
 Defined in [.github/workflows/ci.yaml](.github/workflows/ci.yaml), this action
 runs on each push to master where the commit does not contain '[skip-ci]'.
-
-### TAG CI
-Defined in [.github/workflows/ci.yaml](.github/workflows/tag-ci.yaml), this action
-runs on each tag push.
 
 ### Credentials
 
@@ -40,12 +34,6 @@ This uses GitHub secrets to store credentials for the GitHub action to push to
 the `sagebionetworks` DockerHub account using a service account. All repositories
 that are generated from this template will need to have this service account
 added to it.
-
-### DockerHub
-
-Ideally, the name of the DockerHub repository should be the same as the GitHub
-repository. The workflow uses this name by default as the name of the DockerHub
-branch to push to.
 
 ### Versioning
 Versioning is achieved through git tagging using
@@ -66,10 +54,6 @@ Alternately, to do a minor or major releases manually:
 1. In the CWL tools, change the docker version to use that tag, and create a commit like "Update docker version in cwl tools in preparation for minor release"
 1. Run the tagging commmand: `git tag v0.2.0`
 1. Push the tag: `git push --tags`
-
-Whether you use the release script or create a manual tag, a tag push activates
-the `tag-ci.yaml` action instead of the `ci.yaml` action, and builds the docker 
-image tagged with the release version number.
 
 #### Branch Versioning
 Optionally, you can set up your repository for running the CI action on pushes
