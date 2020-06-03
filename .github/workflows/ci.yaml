@@ -37,6 +37,7 @@ jobs:
   tag:
     if: "!contains(github.event.head_commit.message, '[skip-ci]')"
     runs-on: ubuntu-latest
+    needs: test
     steps:
 
       - name: Git Checkout
