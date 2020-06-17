@@ -20,6 +20,14 @@ testing. Add test descriptions to `tests/test-descriptions.yaml`. Each test
 added requires a file describing the job inputs that should be added to the
 [tests](tests) directory.
 
+### Integration Tests
+While unit tests are recommended, if an integration test is needed, there is an
+example available in the [ci_integration_test_example branch](https://github.com/Sage-Bionetworks-Workflows/dockstore-workflow-template/tree/ci_integration_test_example) of this repository.
+In this example, the workflow is dependent on a file that contains an API key to
+connect to Synapse, an outside service. The Synapse user name and api key are
+stored as secrets in this repository. The example shows how those secrets are
+written to a temporary file for use when testing the workflow in the CI action.
+
 ## Continuous Deployment and Versioning
 
 This template uses GitHub actions to run tests and perform automated versioning.
