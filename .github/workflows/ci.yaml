@@ -26,8 +26,6 @@ jobs:
         run: |
           python -m pip install pipenv
           pipenv install --dev
-          short_sha=${GITHUB_SHA::8}
-          echo "::set-env name=SHORT_SHA::$short_sha"
 
       - name: Test CWL
         id: test_cwl
