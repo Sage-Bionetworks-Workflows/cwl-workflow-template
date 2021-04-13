@@ -1,3 +1,5 @@
+[![CI](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/actions/workflows/ci.yaml/badge.svg)](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/actions/workflows/ci.yaml)
+
 # cwl-workflow-template
 A template project for setting up a [CWL](https://www.commonwl.org/) Workflow.
 
