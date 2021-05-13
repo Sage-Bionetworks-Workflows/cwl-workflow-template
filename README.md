@@ -1,10 +1,12 @@
-# dockstore-workflow-template
+[![CI](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/actions/workflows/ci.yaml/badge.svg)](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/actions/workflows/ci.yaml)
+
+# cwl-workflow-template
 A template project for setting up a [CWL](https://www.commonwl.org/) Workflow.
 
 # Description
 
 This template sets up an opinionated way to organize a repository containing
-workflow, subworkflows, and tests for publication on Dockstore.
+workflow, subworkflows, and tests for publication on Dockstore (the last coming soon).
 
 ## CWL
 
@@ -19,6 +21,14 @@ versioned tool from another repository.
 testing. Add test descriptions to `tests/test-descriptions.yaml`. Each test
 added requires a file describing the job inputs that should be added to the
 [tests](tests) directory.
+
+### Integration Tests
+While unit tests are recommended, if an integration test is needed, there is an
+example available in the [ci_integration_test_example branch](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/tree/ci_integration_test_example) of this repository.
+In this example, the workflow is dependent on a file that contains an API key to
+connect to Synapse, an outside service. The Synapse user name and api key are
+stored as secrets in this repository. The example shows how those secrets are
+written to a temporary file for use when testing the workflow in the CI action.
 
 ## Continuous Deployment and Versioning
 
