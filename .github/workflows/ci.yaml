@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - ci_integration_test_example
+      - updateci
 
 jobs:
 
