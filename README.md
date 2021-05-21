@@ -25,7 +25,7 @@ added requires a file describing the job inputs that should be added to the
 
 ### Integration Tests
 While unit tests are recommended, if an integration test is needed, there is an
-example available in the [updateci](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/tree/updateci) of this repository.
+example available in the [updateci branch](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/tree/updateci) of this repository.
 In this example, the workflow is dependent on a file that contains an API key to
 connect to Synapse, an outside service. The Synapse user name and api key are
 stored as secrets in this repository. The example shows how those secrets are
