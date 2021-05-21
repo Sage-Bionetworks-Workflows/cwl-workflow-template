@@ -5,3 +5,15 @@
   label: workflow_example_test
   id: 0
   doc: Placeholder test
+- job: syn_hello_world.yaml
+  output:
+    "file": {
+      "checksum": "sha1$60fde9c2310b0d4cad4dab8d126b04387efba289",
+      "class": "File",
+      "location": "hello_world.txt",
+      "size": 14
+    }
+  tool: ../main2.cwl
+  label: synapse_integration_test
+  id: 1
+  doc: Example of an integration test that uses Synapse
