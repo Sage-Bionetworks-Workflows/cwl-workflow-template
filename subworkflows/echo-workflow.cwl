@@ -13,7 +13,7 @@ outputs:
 
 steps:
   echo:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks-Workflows/cwl-workflow-template/v0.0.6/subworkflows/echo-workflow.cwl
+    run: https://raw.githubusercontent.com/Sage-Bionetworks-Workflows/cwl-tool-template/v0.0.16/cwl/echo.cwl
     in:
       message: message
     out: [out]
