@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - updateci
 
 jobs:
 
