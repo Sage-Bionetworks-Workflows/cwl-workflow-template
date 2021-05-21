@@ -11,7 +11,8 @@ workflow, subworkflows, and tests for publication on Dockstore (the last coming 
 ## CWL
 
 The example main workflow file, `main.cwl`, if placed at the root of the
-repository. The placeholder workflow includes another workflow as a step from
+repository. There is also a `main2.cwl` workflow that can be used to download 
+data files from [Synapse](https://www.synapse.org/). The placeholder workflow includes another workflow as a step from
 the `subworkflows` directory. The subworkflow has an example of using a
 versioned tool from another repository.
 
@@ -24,7 +25,7 @@ added requires a file describing the job inputs that should be added to the
 
 ### Integration Tests
 While unit tests are recommended, if an integration test is needed, there is an
-example available in the [ci_integration_test_example branch](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/tree/ci_integration_test_example) of this repository.
+example available in the [updateci](https://github.com/Sage-Bionetworks-Workflows/cwl-workflow-template/tree/updateci) of this repository.
 In this example, the workflow is dependent on a file that contains an API key to
 connect to Synapse, an outside service. The Synapse user name and api key are
 stored as secrets in this repository. The example shows how those secrets are
